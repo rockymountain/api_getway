@@ -30,4 +30,10 @@ jobs:
           cat mkdocs.yml  # In nội dung của mkdocs.yml mà Action thấy
           echo "--- End of mkdocs.yml content ---"
           echo "--- Running mkdocs gh-deploy with verbose output ---"
+          echo "--- Python version ---"
+          python --version
+          echo "--- MkDocs version ---"
+          mkdocs --version
+          echo "--- Pip freeze ---"
+          pip freeze
           mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
