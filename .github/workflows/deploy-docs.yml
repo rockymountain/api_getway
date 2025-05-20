@@ -24,4 +24,10 @@ jobs:
 
       - name: Build and Deploy
         run: |
-          mkdocs gh-deploy --force
+          echo "--- Listing files in current directory ---"
+          ls -la
+          echo "--- Content of mkdocs.yml ---"
+          cat mkdocs.yml  # In nội dung của mkdocs.yml mà Action thấy
+          echo "--- End of mkdocs.yml content ---"
+          echo "--- Running mkdocs gh-deploy with verbose output ---"
+          mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
