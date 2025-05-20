@@ -29,7 +29,7 @@ jobs:
           echo "--- MkDocs version ---"
           mkdocs --version
           echo "--- Pip freeze ---"
-          pip freeze # Hãy đảm bảo output của lệnh này được ghi lại đầy đủ
+          pip freeze # Đảm bảo output này được ghi lại
 
           echo "--- Listing files in current directory ---"
           ls -la
@@ -37,30 +37,20 @@ jobs:
           cat mkdocs.yml
           echo "--- End of mkdocs.yml content ---"
 
-          # ... (sau các lệnh echo phiên bản, ls, cat mkdocs.yml)
+          echo "--- Running mkdocs build ---"
+          mkdocs build --verbose # Chỉ build trang web
 
-          echo "--- Running mkdocs build ONLY (verbose) ---"
-          mkdocs build --verbose
-
-          echo "--- Checking for CNAME file in site directory (after mkdocs build) ---"
-          if [ -f site/CNAME ]; then
-            echo "CNAME file found in site directory (created by mkdocs build). Content:"
-            cat site/CNAME
-          else
-            echo "CNAME file NOT found in site directory after mkdocs build."
-            echo "--- Manually creating CNAME file in site directory ---"
-            echo "dx-api.truongvietanh.edu.vn" > site/CNAME
-            echo "Content of manually created site/CNAME:"
-            cat site/CNAME
-          fi
-
-          echo "--- Content of site/sitemap.xml (first 5 <loc> tags) ---"
-          if [ -f site/sitemap.xml ]; then
-            echo "First 5 <loc> tags from site/sitemap.xml:"
-            grep "<loc>" site/sitemap.xml | head -n 5
-          else
-            echo "site/sitemap.xml not found after build."
-          fi
-
-          echo "--- Now running mkdocs gh-deploy ---"
-          mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
+          echo "--- Ensuring CNAME file exists in site directory ---"
+          # Tạo CNAME thủ công vì mkdocs build không tạo ra nó
+          echo "dx-api.truongvietanh.edu.vn" > site/CNAME
+          echo "Current content of site/CNAME:"
+          cat site/CNAME
+          
+          echo "--- Deploying to GitHub Pages using ghp-import directly ---"
+          # ghp-import sẽ tự động tìm CNAME trong thư mục site/
+          # Hoặc bạn có thể chỉ định rõ với cờ -c (xem thêm docs của ghp-import nếu cần)
+          ghp-import --no-jekyll -m "Deploy documentation to GitHub Pages" -p site/ -f -b gh-pages
+          
+          echo "--- Deployment attempt finished. ---"
+          echo "Your site should be available at https://dx-api.truongvietanh.edu.vn IF DNS is correctly configured and GitHub Pages has processed the update."
+          echo "Check your repository's Pages settings. The 'Custom domain' field should now reflect your domain if deployment was successful."
