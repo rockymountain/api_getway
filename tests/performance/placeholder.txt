@@ -1,0 +1,1 @@
+This folder can contain Locust or k6 scripts for performance testing.
