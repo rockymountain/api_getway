@@ -1,8 +1,8 @@
 site_name: API Gateway – DX VAS
-site_url: https://rockymountain.github.io/api_gateway/  # Cập nhật nếu dùng GitHub Pages
+site_url: https://rockymountain.github.io/api_getway/  # Cập nhật nếu dùng GitHub Pages
 
-repo_url: https://github.com/rockymountain/api_gateway
-repo_name: rockymountain/api_gateway
+repo_url: https://github.com/rockymountain/api_getway
+repo_name: rockymountain/api_geteway
 edit_uri: edit/main/docs/
 
 theme:
