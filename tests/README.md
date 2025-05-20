@@ -84,6 +84,10 @@ tests/
 - `--cov=app` cần map đúng thư mục mã nguồn
 - Contract tests (Pact) có thể tách job riêng
 - Có thể tạo badge coverage với Codecov hoặc Coveralls
+- Áp dụng triệt để pip-tools:
+ * Hãy tạo các file requirements.in và requirements-dev.in tương ứng.
+ * Sử dụng pip-compile để tạo ra các file requirements.txt và requirements-dev.txt.
+ * Hướng dẫn team dev sử dụng workflow mới này (ví dụ: khi thêm dependency mới, thêm vào file .in rồi chạy pip-compile).
 
 ---
 
