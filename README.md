@@ -128,8 +128,8 @@ api-gateway/
 **Các bước thực hiện:**
 
 ```bash
-git clone https://github.com/vas-org/api-gateway.git
-cd api-gateway
+git clone https://github.com/rockymountain/api_getway.git
+cd api_getway
 cp .env.example .env
 
 pip install pre-commit
