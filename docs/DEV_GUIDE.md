@@ -153,7 +153,7 @@ Dựa trên [`docs/CONTRIBUTING.md`](CONTRIBUTING.md), mọi lập trình viên 
 
 ## **V. Testing Strategy**
 
-Theo [ADR-019 (Testing Strategy)](ADR/ADR-019-Testing-Strategy.md), chiến lược test bao gồm:
+Theo [ADR-019 (Contract Testing Strategy)](ADR/adr-019-contract-testing.md), chiến lược test bao gồm:
 
 * **Unit Test:** dùng `pytest`
 
@@ -184,7 +184,7 @@ pytest --cov=app tests/
 
 ## **VI. CI/CD (Continuous Integration & Deployment)**
 
-Tóm tắt từ [ADR-003 (CICD Strategy)](ADR/ADR-003-CICD-Strategy.md), [ADR-010 (Canary Release)](ADR/ADR-010-Canary-Release.md), và [ADR-021 (Zero Downtime Deployment)](ADR/ADR-021-Zero-Downtime-Deployment.md):
+Tóm tắt từ [ADR-003 (CICD Structure)](ADR/adr-003-ci-cd-structure.md), [ADR-010 (Deployment Strategy)](ADR/adr-010-deployment-strategy.md), và [ADR-021 (Zero Downtime Deployment)](ADR/adr-021-zero-downtime-deployment.md):
 
 * **CI Pipeline:** GitHub Actions sẽ tự động:
 
@@ -225,7 +225,7 @@ Hạ tầng được đặt trong thư mục `infra/terraform/`, chia làm 2 ph�
 * `modules/`: tập trung các tài nguyên có thể tái sử dụng (Cloud Run, Cloud SQL, Redis, IAM…)
 * `envs/staging/` và `envs/production/`: khai báo riêng cho từng môi trường
 
-Chi tiết được mô tả tại [ADR-023 (Infrastructure as Code Terraform Strategy)](ADR/ADR-023-Infrastructure-as-Code-Terraform-Strategy.md)
+Chi tiết được mô tả tại [ADR-023 (Infrastructure as Code Terraform Strategy)](ADR/adr-023-infrastructure-as-code-terraform-strategy.md)
 
 ### **2. Hướng dẫn cho Developer**
 
@@ -260,7 +260,7 @@ terraform plan -var-file="staging.tfvars"
 
 ## **VIII. API Design & Governance**
 
-Dựa trên [ADR-004 (API Versioning)](./ADR/ADR-004-API-Versioning.md), [ADR-018 (OpenAPI Governance)](./ADR/ADR-018-OpenAPI-Governance.md), [ADR-020 (API Lifecycle)](./ADR/ADR-020-API-Lifecycle.md), và [ADR-007 (Error Handling)](./ADR/ADR-007-Standardized-Error-Handling.md):
+Dựa trên [ADR-004 (API Versioning)](./ADR/adr-004-api-versioning.md), [ADR-018 (OpenAPI Governance)](./ADR/adr-018-api-governance.md), [ADR-020 (API Lifecycle Deprecation)](./ADR/adr-020-api-lifecycle-deprecation.md), và [ADR-007 (Error Handling)](./ADR/adr-007-error-handling.md):
 
 ### **1. Thiết kế API**
 
@@ -286,7 +286,7 @@ Dựa trên [ADR-004 (API Versioning)](./ADR/ADR-004-API-Versioning.md), [ADR-01
 
 ### **5. Xử lý lỗi chuẩn hóa**
 
-Mọi lỗi API phải trả về theo cấu trúc chuẩn theo [ADR-007 (Standardized Error Handling)](./ADR/ADR-007-Standardized-Error-Handling.md):
+Mọi lỗi API phải trả về theo cấu trúc chuẩn theo [ADR-007 (Error Handling)](./ADR/adr-007-error-handling.md):
 
 ```json
 {
@@ -308,7 +308,7 @@ Mọi lỗi API phải trả về theo cấu trúc chuẩn theo [ADR-007 (Standa
 
 ## **IX. Resilience, Caching & Performance**
 
-Dựa trên [ADR-016 (Resilience Strategy)](./ADR/ADR-016-Resilience-Strategy.md) và [ADR-017 (Caching Strategy)](./ADR/ADR-017-Caching-Strategy.md):
+Dựa trên [ADR-016 (Resilience Fallback Strategy)](./ADR/adr-016-resilience-fallback-strategy.md) và [ADR-017 (Caching Strategy)](./ADR/adr-017-caching-strategy.md):
 
 ### **1. Timeout & Retry**
 
@@ -339,7 +339,7 @@ Dựa trên [ADR-016 (Resilience Strategy)](./ADR/ADR-016-Resilience-Strategy.md
 
 ## **X. Multi-Environment Configuration**
 
-Dựa trên [ADR-014 (Multi-Environment Config)](ADR/ADR-014-Multi-Environment-Configuration.md):
+Dựa trên [ADR-014 (Multi-Environment Config)](ADR/adr-014-multi-env-config.md):
 
 ### **1. .env và biến môi trường**
 
@@ -383,7 +383,7 @@ alembic upgrade head
 
 ## **XII. Observability (Logging, Metrics, Tracing, Audit, Cost)**
 
-Dựa trên [ADR-005 (Observability Strategy)](ADR/ADR-005-Observability-Strategy.md), [ADR-012 (Audit Logging)](ADR/ADR-012-Audit-Logging.md), [ADR-022 (3rd-Party Observability)](ADR/ADR-022-Observability-External-Systems.md), và [ADR-015 (Cost Observability)](ADR/ADR-015-Cost-Observability.md):
+Dựa trên [ADR-005 (Observability Strategy)](ADR/adr-005-observability.md), [ADR-012 (Audit Logging)](ADR/adr-012-audit-logging.md), [ADR-022 (3rd-Party Observability)](ADR/adr-022-observability-third-party.md), và [ADR-015 (Cost Observability)](ADR/adr-015-cost-observability.md):
 
 ### **1. Logging**
 
@@ -415,7 +415,7 @@ Dựa trên [ADR-005 (Observability Strategy)](ADR/ADR-005-Observability-Strateg
 > 🔍 Observability không chỉ là thu thập – mà là khả năng hiểu **điều gì đang xảy ra** để phản ứng đúng lúc.
 
 ## **XIII. Security Best Practices**
-Dựa trên [ADR-009 (Security Hardening)](ADR/ADR-009-Security-Hardening.md), [ADR-011 (Secrets Rotation)](ADR/ADR-011-Secrets-Rotation.md), và các chiến lược tổng hợp:
+Dựa trên [ADR-009 (Security Hardening)](ADR/adr-009-security-hardening.md), [ADR-011 (Secrets Rotation)](ADR/adr-011-secrets-rotation.md), và các chiến lược tổng hợp:
 
 ### **1. Transport & Token Security**
 * Chỉ dùng HTTPS (Cloud Run mặc định)
@@ -430,7 +430,7 @@ Dựa trên [ADR-009 (Security Hardening)](ADR/ADR-009-Security-Hardening.md), [
 
 ### **4. Rate Limiting**
 * Sử dụng Redis hoặc GCP Cloud Armor
-* [ADR-008 (Rate-Limiting)](ADR/ADR-008-Rate-Limiting.md) mô tả rõ
+* [ADR-008 (Rate-Limiting)](ADR/adr-008-rate-limiting.md) mô tả rõ
 
 ### **5. Dependency & Image Scanning**
 * Sử dụng safety, bandit trong CI
