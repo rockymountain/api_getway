@@ -144,12 +144,16 @@ docker-compose up --build
 
 ---
 
-## ✅ Triển khai CI/CD
+## ✅ Triển khai CI/CD & Infrastructure as Code
 
 * Branch `dev` → Staging | Branch `main` → Production
-* Sử dụng GitHub Actions: `.github/workflows/ci.yml`
-* Secrets: `GCP_KEY`, `DB_URL`, `REDIS_URL`, `SECRET_KEY`, ...
-* Triển khai hạ tầng bằng Terraform (Cloud Run, SQL, Redis)
+* Sử dụng GitHub Actions: `.github/workflows/ci.yml` cho việc build, test, và deploy ứng dụng API Gateway.
+* **Hạ tầng được định nghĩa và quản lý bằng Terraform (Infrastructure as Code)**, bao gồm các tài nguyên Google Cloud Platform như Cloud Run services, Cloud SQL instances, Redis instances, IAM roles, và các cấu hình liên quan.
+
+  * Mã Terraform được tổ chức trong thư mục `infra/terraform/` với các modules và cấu hình riêng cho từng môi trường (chi tiết trong [`docs/ADR/adr-023-infrastructure-as-code-terraform-strategy.md`](./docs/ADR/ADR-023-Infrastructure-as-Code-Terraform-Strategy.md)).
+  * Các thay đổi về hạ tầng được áp dụng thông qua pipeline CI/CD chuyên biệt cho Terraform, bao gồm các bước `plan` (với review cho production) và `apply`.
+  * State file của Terraform được lưu trữ an toàn trên Google Cloud Storage.
+* Secrets ứng dụng (`DB_URL`, `REDIS_URL`, `JWT_SECRET_KEY`, ...) được quản lý bởi Google Secret Manager và inject vào Cloud Run services thông qua cấu hình Terraform. Secrets cho CI/CD (ví dụ: `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` cho GitHub Actions) được lưu trong GitHub Secrets.
 * (Tùy chọn) Truy cập staging: [https://api-stg.truongvietanh.edu.vn](https://api-stg.truongvietanh.edu.vn)
 
 ---
@@ -168,14 +172,14 @@ docker-compose up --build
 * `docs/DEV_GUIDE.md`: hướng dẫn đầy đủ “From 0 to Hero”
 * `docs/ONBOARDING.md`: checklist dev mới
 * `docs/OFFBOARDING.md`: checklist nghỉ dự án
-* `docs/API_REFERENCE.md`: tài liệu endpoint (auto-gen)
-* `docs/ADR/`: các quyết định kiến trúc chính
+* `docs/API_REFERENCE.md`: tài liệu endpoint (auto-gen). *Lưu ý: Cần có kế hoạch để tài liệu này được tự động tạo hoặc đồng bộ từ OpenAPI specification (theo ADR-018) thay vì tổng hợp thủ công để đảm bảo tính chính xác và cập nhật.*
+* `docs/ADR/`: Các quyết định kiến trúc quan trọng (Architecture Decision Records)
+
+---
 
 ## 🤝 Đóng góp
 
 Chúng tôi luôn chào đón sự đóng góp! Vui lòng xem qua [hướng dẫn đóng góp (`docs/CONTRIBUTING.md`)](./docs/CONTRIBUTING.md) để biết thêm chi tiết về quy trình làm việc, coding convention và cách tạo Pull Request.
-
----
 
 ## ✨ Bản quyền & Giấy phép
 
