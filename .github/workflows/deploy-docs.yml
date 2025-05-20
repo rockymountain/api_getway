@@ -37,15 +37,21 @@ jobs:
           cat mkdocs.yml
           echo "--- End of mkdocs.yml content ---"
 
-          echo "--- Running mkdocs build ONLY (verbose) ---"
-          mkdocs build --verbose # Chỉ build, không deploy, với output chi tiết
+          # ... (sau các lệnh echo phiên bản, ls, cat mkdocs.yml)
 
-          echo "--- Checking for CNAME file in site directory ---"
+          echo "--- Running mkdocs build ONLY (verbose) ---"
+          mkdocs build --verbose
+
+          echo "--- Checking for CNAME file in site directory (after mkdocs build) ---"
           if [ -f site/CNAME ]; then
-            echo "CNAME file found in site directory. Content:"
+            echo "CNAME file found in site directory (created by mkdocs build). Content:"
             cat site/CNAME
           else
-            echo "CNAME file NOT found in site directory after build."
+            echo "CNAME file NOT found in site directory after mkdocs build."
+            echo "--- Manually creating CNAME file in site directory ---"
+            echo "dx-api.truongvietanh.edu.vn" > site/CNAME
+            echo "Content of manually created site/CNAME:"
+            cat site/CNAME
           fi
 
           echo "--- Content of site/sitemap.xml (first 5 <loc> tags) ---"
@@ -55,7 +61,6 @@ jobs:
           else
             echo "site/sitemap.xml not found after build."
           fi
-          
-          echo "--- Intentionally SKIPPING mkdocs gh-deploy for now to analyze build output ---"
-          # echo "--- Now running mkdocs gh-deploy ---"
-          # mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
+
+          echo "--- Now running mkdocs gh-deploy ---"
+          mkdocs gh-deploy --config-file mkdocs.yml --force --verbose
