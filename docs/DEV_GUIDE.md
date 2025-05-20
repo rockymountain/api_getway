@@ -22,7 +22,7 @@ Hướng dẫn chi tiết dành cho developer mới bắt đầu tham gia vào h
 ### **2. Clone dự án và cấu hình ban đầu**
 
 ```bash
-git clone https://github.com/vas-org/api-gateway.git
+git clone https://github.com/rockymountain/api-gateway.git
 cd api-gateway
 cp .env.example .env
 ```
