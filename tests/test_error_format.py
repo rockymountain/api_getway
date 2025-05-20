@@ -1,8 +1,13 @@
-def test_error_schema_fields(client):
-    response = client.get("/non-existent-endpoint")
+import pytest
+from httpx import AsyncClient
+
+@pytest.mark.asyncio
+async def test_error_format_for_not_found(client: AsyncClient):
+    """Kiểm tra định dạng lỗi khi gọi đến endpoint không tồn tại."""
+    response = await client.get("/api/v1/unknown-endpoint")
     assert response.status_code == 404
-    body = response.json()
-    assert "error_code" in body
-    assert "message" in body
-    assert "timestamp" in body
-    assert "request_id" in body
+    data = response.json()
+    assert data["error_code"] == 404
+    assert "message" in data
+    assert "request_id" in data
+    assert "timestamp" in data
