@@ -48,7 +48,7 @@ nav:
       - Đóng góp vào dự án: CONTRIBUTING.md
       - Onboarding cho thành viên mới: ONBOARDING.md
       - Offboarding thành viên: OFFBOARDING.md
-      - Mẫu Offboarding Notes: template.md
+      - Mẫu Offboarding Notes: OFFBOARDING_notes/template.md
   - 🧠 Các quyết định kiến trúc (ADR):
       - ADR-001: ADR/adr-001-fastapi.md
       - ADR-002: ADR/adr-002-rbac-design.md
