@@ -150,7 +150,7 @@ docker-compose up --build
 * Sử dụng GitHub Actions: `.github/workflows/ci.yml` cho việc build, test, và deploy ứng dụng API Gateway.
 * **Hạ tầng được định nghĩa và quản lý bằng Terraform (Infrastructure as Code)**, bao gồm các tài nguyên Google Cloud Platform như Cloud Run services, Cloud SQL instances, Redis instances, IAM roles, và các cấu hình liên quan.
 
-  * Mã Terraform được tổ chức trong thư mục `infra/terraform/` với các modules và cấu hình riêng cho từng môi trường (chi tiết trong [`docs/ADR/adr-023-infrastructure-as-code-terraform-strategy.md`](./docs/ADR/ADR-023-Infrastructure-as-Code-Terraform-Strategy.md)).
+  * Mã Terraform được tổ chức trong thư mục `infra/terraform/` với các modules và cấu hình riêng cho từng môi trường (chi tiết trong [`docs/ADR/adr-023-infrastructure-as-code-terraform-strategy.md`](./docs/ADR/adr-023-infrastructure-as-code-terraform-strategy.md)).
   * Các thay đổi về hạ tầng được áp dụng thông qua pipeline CI/CD chuyên biệt cho Terraform, bao gồm các bước `plan` (với review cho production) và `apply`.
   * State file của Terraform được lưu trữ an toàn trên Google Cloud Storage.
 * Secrets ứng dụng (`DB_URL`, `REDIS_URL`, `JWT_SECRET_KEY`, ...) được quản lý bởi Google Secret Manager và inject vào Cloud Run services thông qua cấu hình Terraform. Secrets cho CI/CD (ví dụ: `WIF_PROVIDER`, `WIF_SERVICE_ACCOUNT` cho GitHub Actions) được lưu trong GitHub Secrets.
