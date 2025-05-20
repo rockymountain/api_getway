@@ -1,0 +1,75 @@
+site_name: API Gateway – DX VAS
+site_url: https://rockymountain.github.io/api-gateway/  # Cập nhật nếu dùng GitHub Pages
+
+repo_url: https://github.com/rockymountain/api-gateway
+repo_name: rockymountain/api-gateway
+edit_uri: edit/main/docs/
+
+theme:
+  name: material
+  language: vi
+  features:
+    - navigation.instant
+    - navigation.tabs
+    - navigation.top
+    - navigation.sections
+    - navigation.indexes
+    - navigation.tracking
+    - toc.integrate
+    - search.highlight
+    - search.share
+    - content.code.copy
+    - content.action.edit
+    - content.action.view
+
+markdown_extensions:
+  - toc:
+      permalink: true
+      toc_depth: 3
+  - admonition
+  - footnotes
+  - tables
+  - attr_list
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - pymdownx.details
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.emoji
+  - pymdownx.snippets
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+nav:
+  - 🏠 Tổng quan: index.md
+  - 🚀 Hướng dẫn Dev: DEV_GUIDE.md
+  - 📚 Tham khảo API: API_REFERENCE.md
+  - 🤝 Quy trình làm việc:
+      - Đóng góp vào dự án: CONTRIBUTING.md
+      - Onboarding cho thành viên mới: ONBOARDING.md
+      - Offboarding thành viên: OFFBOARDING.md
+      - Mẫu Offboarding Notes: template.md
+  - 🧠 Các quyết định kiến trúc (ADR):
+      - ADR-001: ADR/adr-001-fastapi.md
+      - ADR-002: ADR/adr-002-rbac-design.md
+      - ADR-003: ADR/adr-003-ci-cd-structure.md
+      - ADR-004: ADR/adr-004-api-versioning.md
+      - ADR-005: ADR/adr-005-observability.md
+      - ADR-006: ADR/adr-006-auth-design.md
+      - ADR-007: ADR/adr-007-error-handling.md
+      - ADR-008: ADR/adr-008-rate-limiting.md
+      - ADR-009: ADR/adr-009-security-hardening.md
+      - ADR-010: ADR/adr-010-deployment-strategy.md
+      - ADR-011: ADR/adr-011-secrets-rotation.md
+      - ADR-012: ADR/adr-012-audit-logging.md
+      - ADR-013: ADR/adr-013-autoscaling-strategy.md
+      - ADR-014: ADR/adr-014-multi-env-config.md
+      - ADR-015: ADR/adr-015-cost-observability.md
+      - ADR-016: ADR/adr-016-resilience-fallback-strategy.md
+      - ADR-017: ADR/adr-017-caching-strategy.md
+      - ADR-018: ADR/adr-018-api-governance.md
+      - ADR-019: ADR/adr-019-contract-testing.md
+      - ADR-020: ADR/adr-020-api-lifecycle-deprecation.md
+      - ADR-021: ADR/adr-021-zero-downtime-deployment.md
+      - ADR-022: ADR/adr-022-observability-third-party.md
+      - ADR-023: ADR/adr-023-infrastructure-as-code-terraform-strategy.md
