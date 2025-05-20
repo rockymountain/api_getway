@@ -3,7 +3,7 @@ name: Deploy MkDocs to GitHub Pages
 on:
   push:
     branches:
-      - main  # Hoặc 'master' nếu đó là nhánh chính
+      - main # Hoặc 'master' nếu đó là nhánh chính của bạn
 
 jobs:
   deploy:
@@ -16,41 +16,26 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.10' # Hoặc phiên bản Python bạn muốn dùng
 
       - name: Install dependencies
         run: |
-          pip install mkdocs mkdocs-material
+          pip install mkdocs mkdocs-material ghp-import
 
       - name: Build and Deploy
         run: |
-          echo "--- Python version ---"
-          python --version
-          echo "--- MkDocs version ---"
-          mkdocs --version
-          echo "--- Pip freeze ---"
-          pip freeze # Đảm bảo output này được ghi lại
-
-          echo "--- Listing files in current directory ---"
-          ls -la
-          echo "--- Content of mkdocs.yml ---"
-          cat mkdocs.yml
-          echo "--- End of mkdocs.yml content ---"
-
           echo "--- Running mkdocs build ---"
-          mkdocs build --verbose # Chỉ build trang web
+          mkdocs build --verbose # Vẫn giữ verbose để có thông tin nếu build lỗi
 
           echo "--- Ensuring CNAME file exists in site directory ---"
-          # Tạo CNAME thủ công vì mkdocs build không tạo ra nó
+          # Tạo CNAME thủ công vì mkdocs build 1.6.1 không tự tạo ra nó trong trường hợp này
           echo "dx-api.truongvietanh.edu.vn" > site/CNAME
-          echo "Current content of site/CNAME:"
+          echo "Content of site/CNAME:"
           cat site/CNAME
           
           echo "--- Deploying to GitHub Pages using ghp-import directly ---"
           # ghp-import sẽ tự động tìm CNAME trong thư mục site/
-          # Hoặc bạn có thể chỉ định rõ với cờ -c (xem thêm docs của ghp-import nếu cần)
           ghp-import --no-jekyll -m "Deploy documentation to GitHub Pages" -p site/ -f -b gh-pages
           
           echo "--- Deployment attempt finished. ---"
-          echo "Your site should be available at https://dx-api.truongvietanh.edu.vn IF DNS is correctly configured and GitHub Pages has processed the update."
-          echo "Check your repository's Pages settings. The 'Custom domain' field should now reflect your domain if deployment was successful."
+          echo "Site should be available at https://dx-api.truongvietanh.edu.vn"
