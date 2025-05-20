@@ -85,9 +85,12 @@ tests/
 - Contract tests (Pact) có thể tách job riêng
 - Có thể tạo badge coverage với Codecov hoặc Coveralls
 - Áp dụng triệt để pip-tools:
- * Hãy tạo các file requirements.in và requirements-dev.in tương ứng.
- * Sử dụng pip-compile để tạo ra các file requirements.txt và requirements-dev.txt.
- * Hướng dẫn team dev sử dụng workflow mới này (ví dụ: khi thêm dependency mới, thêm vào file .in rồi chạy pip-compile).
+  - Hãy tạo các file requirements.in và requirements-dev.in tương ứng.
+  - Sử dụng pip-compile để tạo ra các file requirements.txt và requirements-dev.txt.
+  - Hướng dẫn team dev sử dụng workflow mới này (ví dụ: khi thêm dependency mới, thêm vào file .in rồi chạy pip-compile).
+  ```bash
+  pip install -r requirements-dev.txt # Để cài đặt tất cả cho môi trường dev
+  ```
 
 ---
 

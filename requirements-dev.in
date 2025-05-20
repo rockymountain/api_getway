@@ -1,0 +1,15 @@
+-r requirements.in
+
+# Testing & Dev Tools
+pytest
+pytest-asyncio
+httpx
+pytest-cov
+schemathesis
+pact-python
+black
+flake8
+isort
+bandit
+mypy
+pip-tools
