@@ -1,6 +1,6 @@
 # ADR-007: Chiến lược xử lý lỗi (Error Handling) cho API Gateway (DX VAS)
 
-* **Trạng thái**: Đã chấp thuận ✅
+* **Trạng thái**: Đã bị thay thế (superseded by `dx_vas/adr-011-api-error-format.md`)
 * **Ngày**: 21/05/2025
 * **Người đề xuất**: Nguyễn Văn K (Tech Lead)
 * **Bối cảnh**: Dự án Chuyển đổi số VAS
@@ -15,38 +15,29 @@ API Gateway là nơi tiếp nhận toàn bộ request từ frontend và định 
 
 ## 🧠 Quyết định
 
-**Áp dụng chiến lược xử lý lỗi tập trung, với định dạng JSON chuẩn hóa cho tất cả response lỗi từ API Gateway.**
+**Tuân thủ theo định dạng lỗi chuẩn đã được quy định trong [DX-VAS/ADR-011 (API Error Format)](https://github.com/rockymountain/dx_vas/blob/main/docs/ADR/adr-011-api-error-format.md) cho toàn hệ thống.**
 
 ---
 
-## 🛠 Thiết kế
+## 🛠 Triển khai tại API Gateway
 
-### 1. Mục tiêu
+### 1. Middleware xử lý tập trung
 
-* Đảm bảo mọi lỗi đều trả về JSON đúng định dạng
-* Giao diện frontend có thể hiển thị lỗi dễ hiểu
-* Developer dễ truy vết và debug
-* Dễ dàng log & monitor lỗi theo mã
+* Sử dụng `exception_handler` trong FastAPI để xử lý toàn bộ lỗi tại một điểm
+* Custom các exception cụ thể:
+  * `HTTPException`
+  * `ValidationError` (Pydantic/FastAPI)
+  * `RBACPermissionDenied`
+  * `TokenExpiredError`
+  * Các lỗi không mong muốn như `ValueError`, `TypeError`, `RuntimeError`... sẽ được map thành lỗi `500 Internal Server Error` với `trace_id` và `message` chung
 
-### 2. Định dạng lỗi chuẩn hóa
+### 2. Forward lỗi từ backend
 
-```json
-{
-  "error_code": 403,
-  "message": "Permission denied",
-  "details": "Permission 'EDIT_STUDENT' is required",
-  "request_id": "abc-123",
-  "timestamp": "2025-05-21T08:30:00Z"
-}
-```
+* Nếu backend trả lỗi không chuẩn:
+  * Lấy status code + message → wrap lại theo định dạng chuẩn
+  * Gắn `meta.source: backend_service_name` nếu cần (giúp phân tích root cause dễ hơn)
 
-* `error_code`: HTTP status code (hoặc có thể mở rộng thành mã lỗi nội bộ trong tương lai)
-* `message`: mô tả lỗi chính (cho người dùng)
-* `details`: thông tin chi tiết hơn (cho developer/frontend debug)
-* `request_id`: phục vụ tracing/log
-* `timestamp`: ISO8601
-
-### 3. Mapping lỗi phổ biến
+### 3. Mapping lỗi phổ biến tại Gateway
 
 | HTTP Code | Mô tả             | Khi nào xảy ra                           |
 | --------- | ----------------- | ---------------------------------------- |
@@ -58,32 +49,13 @@ API Gateway là nơi tiếp nhận toàn bộ request từ frontend và định 
 | 429       | Too Many Requests | Rate limit                               |
 | 502       | Bad Gateway       | Backend trả lỗi hoặc không phản hồi      |
 
-### 4. Middleware xử lý tập trung
-
-* Sử dụng `exception_handler` trong FastAPI để xử lý toàn bộ lỗi tại một điểm
-* Custom các exception cụ thể:
-
-  * `HTTPException`
-  * `ValidationError` (Pydantic/FastAPI)
-  * `RBACPermissionDenied`
-  * `TokenExpiredError`
-  * Các lỗi không mong muốn như `ValueError`, `TypeError`, `RuntimeError`... sẽ được map thành lỗi `500 Internal Server Error` với request\_id và message chung, tránh trả về stacktrace cho client
-
-### 5. Forward lỗi từ backend
-
-* Nếu backend trả lỗi không chuẩn, gateway sẽ:
-
-  * Lấy status code + message → wrap lại theo định dạng chuẩn
-  * Gắn `source: backend_service_name` nếu cần (giúp phân tích root cause dễ hơn)
-
 ---
 
 ## ✅ Lợi ích
 
-* Trải nghiệm frontend nhất quán
-* Developer dễ log và test
-* Giám sát lỗi dễ hơn (có thể alert theo error\_code hoặc request\_id)
-* Tăng độ tin cậy của toàn hệ thống
+* Tuân thủ chính sách chung toàn hệ thống
+* Tăng khả năng giám sát & phân tích lỗi tập trung
+* Cho phép các đội frontend/backend xử lý lỗi thống nhất
 
 ---
 
@@ -91,17 +63,14 @@ API Gateway là nơi tiếp nhận toàn bộ request từ frontend và định 
 
 | Rủi ro                            | Giải pháp                                                                                                                                                    |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Format lỗi không đồng nhất        | Áp dụng handler trung tâm cho mọi exception                                                                                                                  |
 | Thông tin lỗi lộ dữ liệu nhạy cảm | Trong môi trường production, trường `details` sẽ bị lược bỏ hoặc thay bằng thông báo chung. Chi tiết lỗi chỉ được ghi vào log nội bộ (Cloud Logging, stdout) |
-| Backend trả lỗi không rõ ràng     | Mapping lại tại gateway và thêm `source` để trace                                                                                                            |
+| Backend trả lỗi không rõ ràng     | Mapping lại tại gateway và thêm `meta.source` để trace                                                                                                       |
 
 ---
 
-## 🔄 Các lựa chọn đã loại bỏ
+## 🔄 Trạng thái kế thừa
 
-* **Trả lỗi mặc định theo FastAPI/Pydantic**: Khó hiểu, không có timestamp, thiếu context
-* **Trả lỗi HTML (default)**: Không phù hợp với REST API
-* **Trả lỗi từng nơi tự xử lý**: Thiếu thống nhất, dễ lỗi không chuẩn
+> ADR này **được thay thế bởi** [DX-VAS/ADR-011 (API Error Format)](https://github.com/rockymountain/dx_vas/blob/main/docs/ADR/adr-011-api-error-format.md). Tài liệu này chỉ giữ lại các đặc tả triển khai cụ thể tại API Gateway.
 
 ---
 
@@ -109,8 +78,7 @@ API Gateway là nơi tiếp nhận toàn bộ request từ frontend và định 
 
 * Exception middleware: [`utils/exception_handler.py`](../../utils/exception_handler.py)
 * Dev Guide – Error Handling section: [`DEV_GUIDE.md`](../DEV_GUIDE.md)
-* ADR trước: [`adr-006-auth-design.md`](./adr-006-auth-design.md)
+* ADR Dự Án Tổng [DX-VAS/ADR-011 (API Error Format)](https://github.com/rockymountain/dx_vas/blob/main/docs/ADR/adr-011-api-error-format.md)
 
 ---
-
 > “Một hệ thống tốt không chỉ chạy tốt khi đúng – mà còn phản hồi tốt khi sai.”

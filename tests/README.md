@@ -95,8 +95,6 @@ tests/
 
 ## 📌 Lời nhắn cho Tem Dev và QA/QC
 
----
-
 ### **1. Hiện thực hóa các Test Scenarios còn lại**
 
 Dựa trên phần **"BƯỚC 2 – Định nghĩa Bộ Scenarios Chính (Test Design)"** team phát triển (hoặc QA) sẽ tiếp tục:
@@ -105,16 +103,12 @@ Dựa trên phần **"BƯỚC 2 – Định nghĩa Bộ Scenarios Chính (Test D
 - Bao gồm các luồng "happy path" và các trường hợp biên (edge case).
 - Liên kết rõ ràng mỗi test case với ADR tương ứng để đảm bảo tuân thủ thiết kế.
 
----
-
 ### **2. Tinh chỉnh Fixtures**
 
 - Mở rộng hoặc tái cấu trúc các fixtures trong `conftest.py`:
   - Thêm user với nhiều role/permission phức tạp hơn.
   - Tạo fixture JWT token cho các vai trò như `admin`, `teacher`, `guest`, v.v.
   - Mock các dịch vụ bên ngoài nếu cần (ví dụ: Google OAuth2, Redis cache…).
-
----
 
 ### **3. Xác định chính xác Key Pattern cho Rate Limit**
 
@@ -124,8 +118,6 @@ Dựa trên phần **"BƯỚC 2 – Định nghĩa Bộ Scenarios Chính (Test D
   - Không ảnh hưởng đến dữ liệu dev hoặc các test khác.
 - Đây là bước thiết yếu để các test rate limit luôn hoạt động ổn định.
 
----
-
 ### **4. Thiết lập và Phát triển Contract Tests (Pact)**
 
 - Áp dụng theo [ADR-019 - Contract Testing].
@@ -133,16 +125,12 @@ Dựa trên phần **"BƯỚC 2 – Định nghĩa Bộ Scenarios Chính (Test D
 - Thiết kế các "contract" rõ ràng và kiểm tra việc thực hiện đúng ở cả 2 phía (consumer - provider).
 - Đưa vào CI/CD để chạy định kỳ hoặc theo sự kiện.
 
----
-
 ### **5. Lên kế hoạch cho Performance Tests**
 
 - Dù là *optional* ở giai đoạn này, cần có roadmap cụ thể:
   - Khi nào bắt đầu?
   - Dùng công cụ nào? (Locust, k6, Artillery…)
   - Mục tiêu gì? (Throughput, latency, stability…)
-
----
 
 ### **6. Liên tục Review và Cải tiến Bộ Test**
 
